@@ -207,7 +207,7 @@ export default function LandingPage() {
                                 priority
                             />
                             <div className="text-neutral-400">
-                                <p>© 2024 TalkTuahTherapist. Made with 🥰 by UofT Hacks Team</p>
+                                <p>© 2025 TalkTuahTherapist</p>
                                 <div className="flex justify-center gap-4 mt-2 text-sm">
                                     <Link href="#" className="text-primary-400 hover:text-primary-300 transition-colors">Privacy Policy</Link>
                                     <Link href="#" className="text-primary-400 hover:text-primary-300 transition-colors">Terms of Service</Link>

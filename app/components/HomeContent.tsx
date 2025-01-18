@@ -8,6 +8,7 @@ import CustomPersonaCreator from "./CustomPersonaCreator";
 import SpeechRecorder from "./SpeechRecorder";
 import Dynamic from "./Dynamic";
 import { basePersonas } from "../lib/constants";
+import { useRouter } from 'next/navigation';
 
 export default function HomeContent() {
     const { primaryWallet } = useDynamicContext();
@@ -19,6 +20,7 @@ export default function HomeContent() {
     const [personas, setPersonas] = useState(basePersonas);
     const [showChat, setShowChat] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
+    const router = useRouter();
 
     const handleAddCustomPersona = (newPersona: any) => {
         setPersonas(prev => [...prev, newPersona]);

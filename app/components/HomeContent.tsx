@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +10,7 @@ import SpeechRecorder from "./SpeechRecorder";
 import Dynamic from "./Dynamic";
 import { basePersonas } from "../lib/constants";
 import { Vortex } from "../components/ui/vortex";
+import { FaPlus, FaSignOutAlt } from 'react-icons/fa';
 
 export default function HomeContent() {
     const { primaryWallet } = useDynamicContext();
@@ -18,9 +21,11 @@ export default function HomeContent() {
     const [isSaving, setIsSaving] = useState(false);
     const [personas, setPersonas] = useState(basePersonas);
     const [searchQuery, setSearchQuery] = useState("");
+    const [showCustomCreator, setShowCustomCreator] = useState(false);
 
     const handleAddCustomPersona = (newPersona: any) => {
         setPersonas(prev => [...prev, newPersona]);
+        setShowCustomCreator(false);
     };
 
     const handleReset = () => setMessages([]);
@@ -87,47 +92,52 @@ export default function HomeContent() {
                 animate={{ opacity: 1 }}
                 className="relative z-10"
             >
-                <div className="bg-primary-900/50 text-primary-200 py-3 text-center backdrop-blur-sm border-b border-primary-800/50">
-                    <motion.p
-                        initial={{ y: -20, opacity: 0 }}
-                        animate={{ y: 0, opacity: 1 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-lg font-medium"
-                    >
-                        Welcome to TalkTuahTherapist - Your AI Companion
-                    </motion.p>
-                </div>
-
-                <nav className="p-6 flex justify-between items-center backdrop-blur-sm bg-primary-900/30 border-b border-primary-800/50">
-                    <motion.div 
-                        className="flex items-center gap-4"
-                        initial={{ x: -20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        <div className="relative group">
-                            <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
-                            <Image
-                                src="/raccoon-logo.png"
-                                alt="TalkTuahTherapist Logo"
-                                width={50}
-                                height={50}
-                                className="rounded-full relative"
-                            />
+                <nav className="p-6 backdrop-blur-sm bg-primary-900/30 border-b border-primary-800/50">
+                    <div className="max-w-7xl mx-auto flex justify-between items-center">
+                        <Link href="/" className="flex items-center gap-4 group">
+                            <div className="relative">
+                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
+                                <Image
+                                    src="/raccoon-logo.png"
+                                    alt="TalkTuahTherapist Logo"
+                                    width={50}
+                                    height={50}
+                                    className="rounded-full relative"
+                                    priority
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <h1 className="text-2xl font-bold text-white">TalkTuahTherapist</h1>
+                                <p className="text-sm text-neutral-300">AI Therapy Chat</p>
+                            </div>
+                        </Link>
+                        
+                        <div className="flex items-center gap-4">
+                            <button
+                                onClick={() => setShowCustomCreator(true)}
+                                className="flex items-center gap-2 px-4 py-2 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl"
+                            >
+                                <FaPlus />
+                                <span>Create Therapist</span>
+                            </button>
+                            <Dynamic />
                         </div>
-                        <div>
-                            <h1 className="text-2xl font-bold text-white">TalkTuahTherapist</h1>
-                            <p className="text-sm text-neutral-300">AI Therapy Chat</p>
-                        </div>
-                    </motion.div>
-                    <motion.div
-                        initial={{ x: 20, opacity: 0 }}
-                        animate={{ x: 0, opacity: 1 }}
-                        transition={{ delay: 0.4 }}
-                    >
-                        <Dynamic />
-                    </motion.div>
+                    </div>
                 </nav>
+
+                {showCustomCreator && (
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+                        <div className="max-w-2xl w-full mx-4">
+                            <CustomPersonaCreator onAdd={handleAddCustomPersona} />
+                            <button
+                                onClick={() => setShowCustomCreator(false)}
+                                className="mt-4 w-full px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white rounded-lg transition-colors"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                )}
 
                 <main className="container mx-auto px-4 py-8 relative z-10">
                     <div className="max-w-6xl mx-auto space-y-8">
@@ -155,14 +165,15 @@ export default function HomeContent() {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     onClick={() => handlePersonaChange(persona.id)}
-                                    className={`card-enhanced gradient-border p-6 rounded-xl cursor-pointer transition-all ${
+                                    className={`card-enhanced gradient-border p-6 rounded-xl cursor-pointer transition-all relative group ${
                                         selectedPersona === persona.id
                                             ? 'bg-primary-900/70 ring-2 ring-primary-400 shadow-lg shadow-primary-500/20'
                                             : 'bg-neutral-800/30 hover:bg-primary-900/50'
                                     }`}
                                 >
-                                    <h3 className="font-semibold text-lg mb-2 text-white">{persona.name}</h3>
-                                    <p className="text-sm text-neutral-400">{persona.description}</p>
+                                    <div className="absolute inset-0 bg-gradient-to-br from-primary-400/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-xl"></div>
+                                    <h3 className="font-semibold text-lg mb-2 text-white relative z-10">{persona.name}</h3>
+                                    <p className="text-sm text-neutral-400 relative z-10">{persona.description}</p>
                                 </motion.div>
                             ))}
                         </motion.div>
@@ -187,8 +198,9 @@ export default function HomeContent() {
                                                 message.role === "user" 
                                                     ? "bg-primary-600/80 text-white"
                                                     : "bg-neutral-700/80 text-white"
-                                            } shadow-lg`}>
-                                                {message.content}
+                                            } shadow-lg relative group`}>
+                                                <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                                <p className="relative z-10">{message.content}</p>
                                             </div>
                                         </motion.div>
                                     ))}
@@ -212,18 +224,20 @@ export default function HomeContent() {
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={handleReset}
-                                className="px-6 py-3 bg-neutral-700/50 hover:bg-neutral-600/50 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl"
+                                className="relative group px-6 py-3 bg-neutral-700/50 hover:bg-neutral-600/50 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl"
                             >
-                                Reset Chat
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                <span className="relative z-10">Reset Chat</span>
                             </motion.button>
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
                                 onClick={handleSave}
                                 disabled={isSaving}
-                                className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl disabled:bg-neutral-600/50"
+                                className="relative group px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl disabled:bg-neutral-600/50"
                             >
-                                {isSaving ? "Saving..." : "Save Chat"}
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                <span className="relative z-10">{isSaving ? "Saving..." : "Save Chat"}</span>
                             </motion.button>
                             {savedBlobIds[selectedPersona] && (
                                 <motion.button
@@ -231,14 +245,13 @@ export default function HomeContent() {
                                     whileTap={{ scale: 0.95 }}
                                     onClick={handleLoad}
                                     disabled={isLoading}
-                                    className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl disabled:bg-neutral-600/50"
+                                    className="relative group px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl disabled:bg-neutral-600/50"
                                 >
-                                    {isLoading ? "Loading..." : "Load Chat"}
+                                    <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                    <span className="relative z-10">{isLoading ? "Loading..." : "Load Chat"}</span>
                                 </motion.button>
                             )}
                         </motion.div>
-
-                        <CustomPersonaCreator onAdd={handleAddCustomPersona} />
                     </div>
                 </main>
 
@@ -247,14 +260,25 @@ export default function HomeContent() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1.4 }}
+                        className="flex flex-col items-center gap-2"
                     >
-                        Made with 🥰 by{" "}
-                        <Link 
-                            href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" 
-                            className="text-primary-400 hover:text-primary-300 transition-all hover:underline"
-                        >
-                            UofT Hacks Team
-                        </Link>
+                        <Image
+                            src="/raccoon-logo.png"
+                            alt="TalkTuahTherapist"
+                            width={30}
+                            height={30}
+                            className="rounded-full"
+                            priority
+                        />
+                        <div>
+                            Made with 🥰 by{" "}
+                            <Link 
+                                href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" 
+                                className="text-primary-400 hover:text-primary-300 transition-all hover:underline"
+                            >
+                                UofT Hacks Team
+                            </Link>
+                        </div>
                     </motion.div>
                 </footer>
             </motion.div>

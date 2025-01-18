@@ -3,9 +3,9 @@
 import React from "react";
 import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
-import LandingPage from "./components/LandingPage";
+import HomeContent from "../components/HomeContent";
 
-export default function Home() {
+export default function TherapistPage() {
     return (
         <DynamicContextProvider
             settings={{
@@ -13,7 +13,7 @@ export default function Home() {
                 walletConnectors: [EthereumWalletConnectors],
             }}
         >
-            <LandingPage />
+            <HomeContent />
         </DynamicContextProvider>
     );
 }

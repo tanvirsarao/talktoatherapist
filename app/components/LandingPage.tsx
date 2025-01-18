@@ -17,9 +17,8 @@ export default function LandingPage() {
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <div className="flex items-center gap-4">
                             <div className="relative group">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
                                 <Image
-                                    src="/raccoon-logo.png"
+                                    src="/logo.png"
                                     alt="TalkTuahTherapist Logo"
                                     width={50}
                                     height={50}
@@ -29,11 +28,6 @@ export default function LandingPage() {
                             </div>
                             <div className="space-y-1">
                                 <span className="text-2xl font-bold text-white">TalkTuahTherapist</span>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xs text-primary-300">Powered by AI</span>
-                                    <div className="h-1 w-1 rounded-full bg-primary-400"></div>
-                                    <span className="text-xs text-primary-300">24/7 Support</span>
-                                </div>
                             </div>
                         </div>
                         <Link 
@@ -54,22 +48,10 @@ export default function LandingPage() {
                             transition={{ duration: 0.8 }}
                             className="relative inline-block"
                         >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 rounded-full opacity-75 blur"></div>
-                            <Image
-                                src="/raccoon-logo.png"
-                                alt="TalkTuahTherapist"
-                                width={150}
-                                height={150}
-                                className="relative rounded-full mb-8 mx-auto"
-                                priority
-                            />
-                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary-400 to-primary-600 px-4 py-1 rounded-full text-xs text-white">
-                                AI Powered
-                            </div>
                         </motion.div>
 
                         <motion.h1 
-                            className="text-7xl font-bold gradient-text"
+                            className="text-7xl font-bold gradient-text tracking-tight"
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
@@ -153,14 +135,13 @@ export default function LandingPage() {
                     </motion.div>
 
                     <motion.div 
-                        className="py-20 border-t border-primary-800/50"
+                        className="py-20"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.8 }}
                     >
                         <h2 className="text-4xl font-bold text-center mb-16 gradient-text">How It Works</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary-400/20 to-transparent -translate-y-1/2 hidden md:block"></div>
                             <div className="text-center space-y-4 relative">
                                 <div className="flex justify-center">
                                     <div className="relative">
@@ -195,11 +176,11 @@ export default function LandingPage() {
                     </motion.div>
                 </main>
 
-                <footer className="border-t border-primary-800/50 py-8 text-center">
+                <footer className="py-8 text-center">
                     <div className="max-w-7xl mx-auto px-4">
                         <div className="flex flex-col items-center gap-4">
                             <Image
-                                src="/raccoon-logo.png"
+                                src="/logo.png"
                                 alt="TalkTuahTherapist"
                                 width={40}
                                 height={40}

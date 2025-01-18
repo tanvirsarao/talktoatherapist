@@ -104,9 +104,8 @@ export default function HomeContent() {
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <Link href="/" className="flex items-center gap-4 group">
                             <div className="relative">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
                                 <Image
-                                    src="/raccoon-logo.png"
+                                    src="/logo.png"
                                     alt="TalkTuahTherapist Logo"
                                     width={50}
                                     height={50}
@@ -262,28 +261,22 @@ export default function HomeContent() {
                     />
                 )}
 
-                <footer className="p-6 text-center text-neutral-400 relative z-10 backdrop-blur-sm border-t border-primary-800/50">
+                <footer className="py-8 text-center">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="flex flex-col items-center gap-2"
                     >
                         <Image
-                            src="/raccoon-logo.png"
+                            src="/logo.png"
                             alt="TalkTuahTherapist"
                             width={30}
                             height={30}
                             className="rounded-full"
                             priority
                         />
-                        <div>
-                            Made with 🥰 by{" "}
-                            <Link 
-                                href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" 
-                                className="text-primary-400 hover:text-primary-300 transition-all hover:underline"
-                            >
-                                UofT Hacks Team
-                            </Link>
+                        <div className="text-neutral-400">
+                            <p>© 2025 TalkTuahTherapist</p>
                         </div>
                     </motion.div>
                 </footer>

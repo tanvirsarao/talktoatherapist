@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'TalkTuahTherapist',
   description: 'AI Therapy Chat Interface',
   icons: {
-    icon: '/raccoon-logo.png',
+    icon: '/logo.png',
   }
 }
 

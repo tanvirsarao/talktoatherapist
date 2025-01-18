@@ -13,6 +13,27 @@ interface SpeechRecorderProps {
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
 }
 
+interface SpeechRecognitionEvent {
+    results: SpeechRecognitionResultList;
+    resultIndex: number;
+}
+
+interface SpeechRecognitionResultList {
+    length: number;
+    item(index: number): SpeechRecognitionResult;
+    [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+    isFinal: boolean;
+    [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+    transcript: string;
+    confidence: number;
+}
+
 export default function SpeechRecorder({
     selectedPersona,
     messages,
@@ -25,7 +46,7 @@ export default function SpeechRecorder({
     const recognitionRef = useRef<SpeechRecognition | null>(null);
     const synth = useRef<SpeechSynthesis | null>(null);
     const lastResultTimeRef = useRef<number>(0);
-    const intervalRef = useRef<NodeJS.Timer | null>(null);
+    const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
     // Initialize speech recognition
     useEffect(() => {
@@ -42,7 +63,7 @@ export default function SpeechRecorder({
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = "en-US";
 
-        recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+        recognitionRef.current.onresult = (event: any) => {
             lastResultTimeRef.current = Date.now();
             let transcript = "";
             for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -83,6 +104,32 @@ export default function SpeechRecorder({
             alert("Speech recognition is not supported in this browser.");
             return;
         }
+
+        // Reinitialize recognition instance
+        const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = "en-US";
+
+        // Reattach event handlers
+        recognitionRef.current.onresult = (event: any) => {
+            lastResultTimeRef.current = Date.now();
+            let transcript = "";
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            setPartialTranscript(transcript);
+        };
+
+        recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
+            console.error("Speech recognition error:", event.error);
+        };
+
+        recognitionRef.current.onend = () => {
+            console.log("Speech recognition service disconnected");
+        };
+
         setPartialTranscript("");
         lastResultTimeRef.current = Date.now();
         recognitionRef.current.start();
@@ -91,12 +138,17 @@ export default function SpeechRecorder({
 
     const stopRecording = () => {
         if (!recognitionRef.current) return;
-        recognitionRef.current.stop();
-        setIsRecording(false);
-
-        if (partialTranscript.trim()) {
-            finalizeChunk(partialTranscript.trim());
-            setPartialTranscript("");
+        try {
+            recognitionRef.current.stop();
+            setIsRecording(false);
+            
+            if (partialTranscript.trim()) {
+                finalizeChunk(partialTranscript.trim());
+                setPartialTranscript("");
+            }
+        } catch (error) {
+            console.error("Error stopping recognition:", error);
+            setIsRecording(false);
         }
     };
 

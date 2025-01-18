@@ -140,14 +140,13 @@ export default function LandingPage() {
                     </motion.div>
 
                     <motion.div 
-                        className="py-20 border-t border-primary-800/50"
+                        className="py-20"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.8 }}
                     >
                         <h2 className="text-4xl font-bold text-center mb-16 gradient-text">How It Works</h2>
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 relative">
-                            <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary-400/20 to-transparent -translate-y-1/2 hidden md:block"></div>
                             <div className="text-center space-y-4 relative">
                                 <div className="flex justify-center">
                                     <div className="relative">
@@ -182,7 +181,7 @@ export default function LandingPage() {
                     </motion.div>
                 </main>
 
-                <footer className="border-t border-primary-800/50 py-8 text-center">
+                <footer className="py-8 text-center">
                     <div className="max-w-7xl mx-auto px-4">
                         <div className="flex flex-col items-center gap-4">
                             <Image

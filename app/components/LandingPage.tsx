@@ -17,9 +17,8 @@ export default function LandingPage() {
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <div className="flex items-center gap-4">
                             <div className="relative group">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
                                 <Image
-                                    src="/raccoon-logo.png"
+                                    src="/logo.png"
                                     alt="TalkTuahTherapist Logo"
                                     width={50}
                                     height={50}
@@ -54,18 +53,6 @@ export default function LandingPage() {
                             transition={{ duration: 0.8 }}
                             className="relative inline-block"
                         >
-                            <div className="absolute -inset-1 bg-gradient-to-r from-primary-400 via-primary-500 to-primary-600 rounded-full opacity-75 blur"></div>
-                            <Image
-                                src="/raccoon-logo.png"
-                                alt="TalkTuahTherapist"
-                                width={150}
-                                height={150}
-                                className="relative rounded-full mb-8 mx-auto"
-                                priority
-                            />
-                            <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-primary-400 to-primary-600 px-4 py-1 rounded-full text-xs text-white">
-                                AI Powered
-                            </div>
                         </motion.div>
 
                         <motion.h1 
@@ -199,7 +186,7 @@ export default function LandingPage() {
                     <div className="max-w-7xl mx-auto px-4">
                         <div className="flex flex-col items-center gap-4">
                             <Image
-                                src="/raccoon-logo.png"
+                                src="/logo.png"
                                 alt="TalkTuahTherapist"
                                 width={40}
                                 height={40}

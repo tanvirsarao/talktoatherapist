@@ -104,9 +104,8 @@ export default function HomeContent() {
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <Link href="/" className="flex items-center gap-4 group">
                             <div className="relative">
-                                <div className="absolute -inset-0.5 bg-gradient-to-r from-primary-400 to-primary-600 rounded-full opacity-75 group-hover:opacity-100 blur transition duration-1000 group-hover:duration-200"></div>
                                 <Image
-                                    src="/raccoon-logo.png"
+                                    src="/logo.png"
                                     alt="TalkTuahTherapist Logo"
                                     width={50}
                                     height={50}
@@ -269,7 +268,7 @@ export default function HomeContent() {
                         className="flex flex-col items-center gap-2"
                     >
                         <Image
-                            src="/raccoon-logo.png"
+                            src="/logo.png"
                             alt="TalkTuahTherapist"
                             width={30}
                             height={30}

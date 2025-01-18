@@ -261,7 +261,7 @@ export default function HomeContent() {
                     />
                 )}
 
-                <footer className="p-6 text-center text-neutral-400 relative z-10 backdrop-blur-sm border-t border-primary-800/50">
+                <footer className="py-8 text-center">
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -275,14 +275,8 @@ export default function HomeContent() {
                             className="rounded-full"
                             priority
                         />
-                        <div>
-                            Made with 🥰 by{" "}
-                            <Link 
-                                href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" 
-                                className="text-primary-400 hover:text-primary-300 transition-all hover:underline"
-                            >
-                                UofT Hacks Team
-                            </Link>
+                        <div className="text-neutral-400">
+                            <p>© 2025 TalkTuahTherapist</p>
                         </div>
                     </motion.div>
                 </footer>

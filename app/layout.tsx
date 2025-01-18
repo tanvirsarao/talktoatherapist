@@ -5,8 +5,8 @@ import { Metadata } from 'next'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AnonTherapy',
-  description: 'Online counseling chat interface',
+  title: 'TalkTuahTherapist',
+  description: 'AI Therapy Chat Interface',
   icons: {
     icon: '/raccoon-logo.png',
   }

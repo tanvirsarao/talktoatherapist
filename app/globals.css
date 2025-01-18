@@ -39,17 +39,17 @@
 
 @layer base {
   body {
-    @apply bg-neutral-900 text-white;
+    @apply bg-neutral-900 text-white antialiased;
   }
 }
 
 @layer components {
   .gradient-bg {
-    @apply bg-gradient-to-br from-neutral-900 to-primary-900 relative;
+    @apply bg-gradient-to-br from-neutral-900 via-primary-900/20 to-primary-900 relative;
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-200 to-primary-400;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-200 via-primary-300 to-primary-400;
   }
 
   .pattern-bg {
@@ -61,16 +61,30 @@
 
   .card-enhanced {
     @apply backdrop-blur-md shadow-lg transition-all duration-300;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.01)
+    );
   }
 
   .card-enhanced:hover {
     @apply transform -translate-y-1 shadow-xl;
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.05)
+    );
   }
 
   .gradient-border {
     @apply relative border border-transparent;
     background: linear-gradient(var(--neutral-800), var(--neutral-800)) padding-box,
                 linear-gradient(135deg, var(--primary-400), var(--primary-600)) border-box;
+  }
+
+  .glass-morphism {
+    @apply backdrop-blur-lg bg-white/10 border border-white/20;
   }
 }
 
@@ -89,6 +103,18 @@
 
   .transition-enhanced {
     @apply transition-all duration-300 ease-in-out;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px currentColor;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    filter: drop-shadow(0 0 10px currentColor);
   }
 }
 
@@ -130,7 +156,7 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -143,8 +169,47 @@
   border-radius: 4px;
 }
 
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-500);
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+/* Animations */
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient 8s linear infinite;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px var(--primary-400),
+                0 0 10px var(--primary-400),
+                0 0 15px var(--primary-600);
+  }
+  to {
+    box-shadow: 0 0 10px var(--primary-400),
+                0 0 20px var(--primary-400),
+                0 0 30px var(--primary-600);
   }
 }

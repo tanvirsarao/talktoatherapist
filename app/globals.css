@@ -49,7 +49,15 @@
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-200 via-primary-300 to-primary-400;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      #60A5FA 0%,    /* blue-400 */
+      #93C5FD 25%,   /* blue-300 */
+      #BFDBFE 50%,   /* blue-200 */
+      #93C5FD 75%,   /* blue-300 */
+      #60A5FA 100%   /* blue-400 */
+    );
   }
 
   .pattern-bg {

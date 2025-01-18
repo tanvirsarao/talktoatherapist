@@ -28,11 +28,6 @@ export default function LandingPage() {
                             </div>
                             <div className="space-y-1">
                                 <span className="text-2xl font-bold text-white">TalkTuahTherapist</span>
-                                <div className="flex items-center gap-2">
-                                    <span className="text-xs text-primary-300">Powered by AI</span>
-                                    <div className="h-1 w-1 rounded-full bg-primary-400"></div>
-                                    <span className="text-xs text-primary-300">24/7 Support</span>
-                                </div>
                             </div>
                         </div>
                         <Link 

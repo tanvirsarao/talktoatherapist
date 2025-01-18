@@ -17,6 +17,7 @@ export default function HomeContent() {
     const [isLoading, setIsLoading] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [personas, setPersonas] = useState(basePersonas);
+    const [showChat, setShowChat] = useState(false);
 
     const handleAddCustomPersona = (newPersona: any) => {
         setPersonas(prev => [...prev, newPersona]);
@@ -107,6 +108,45 @@ export default function HomeContent() {
             setIsLoading(false);
         }
     };
+
+    if (!showChat) {
+        return (
+            <main className="min-h-screen bg-neutral-900 flex flex-col">
+                <nav className="p-6 flex justify-between items-center">
+                    <Image
+                        src="/raccoon-logo.png"
+                        alt="AnonTherapy Logo"
+                        width={50}
+                        height={50}
+                        className="rounded-full"
+                    />
+                    <Dynamic />
+                </nav>
+                
+                <div className="flex-1 flex flex-col items-center justify-center px-4 text-center">
+                    <h1 className="text-6xl font-bold text-primary-200 mb-6">Doc2You</h1>
+                    <p className="text-xl text-neutral-400 mb-12 max-w-2xl">
+                        Experience personalized AI therapy with unique personas. 
+                        Your conversations are secure, private, and saved on the blockchain.
+                    </p>
+                    
+                    <button
+                        onClick={() => setShowChat(true)}
+                        className="bg-primary-600 hover:bg-primary-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105"
+                    >
+                        Start Your Session
+                    </button>
+                </div>
+
+                <footer className="p-6 text-center text-neutral-400">
+                    Made with 🥰 by{" "}
+                    <Link href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" className="text-primary-400 hover:underline">
+                        UofT Hacks Team
+                    </Link>
+                </footer>
+            </main>
+        );
+    }
 
     return (
         <main className="container mx-auto p-4 flex flex-col min-h-screen bg-neutral-900">
@@ -212,13 +252,6 @@ export default function HomeContent() {
                 Made with 🥰 by{" "}
                 <Link href="https://www.linkedin.com/in/dev-katyal-67bb1623b/" className="text-primary-400 hover:underline">
                     UofT Hacks Team
-                </Link>{" "}
-                &nbsp; | &nbsp;
-                <Link
-                    href="https://www.linkedin.com/in/dev-katyal-67bb1623b/"
-                    className="text-primary-400 hover:underline"
-                >
-                    About the Project
                 </Link>
             </footer>
         </main>

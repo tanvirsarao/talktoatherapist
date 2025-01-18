@@ -63,7 +63,7 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:border-neutral-600"
+                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 bg-neutral-700 text-white border-neutral-600"
                                 placeholder="Dr. Smith"
                             />
                         </div>
@@ -76,7 +76,7 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
                                 type="text"
                                 value={description}
                                 onChange={(e) => setDescription(e.target.value)}
-                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:border-neutral-600"
+                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 bg-neutral-700 text-white border-neutral-600"
                                 placeholder="A compassionate therapist specializing in anxiety"
                             />
                         </div>
@@ -88,7 +88,7 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
                             <textarea
                                 value={customPrompt}
                                 onChange={(e) => setCustomPrompt(e.target.value)}
-                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 dark:bg-neutral-700 dark:border-neutral-600"
+                                className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 bg-neutral-700 text-white border-neutral-600"
                                 rows={4}
                                 placeholder="You are a compassionate therapist who specializes in anxiety disorders. You use a mix of CBT and mindfulness techniques..."
                             />

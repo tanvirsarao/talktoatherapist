@@ -101,7 +101,7 @@ export default function TherapistCustomizer({ onSave, onClose }: TherapistCustom
                             type="text"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
-                            className="w-full px-4 py-2 bg-neutral-700/50 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 text-white"
+                            className="w-full px-4 py-2 bg-neutral-700 border border-neutral-600 rounded-lg focus:ring-2 focus:ring-primary-500 text-white placeholder-neutral-400"
                             placeholder="Dr. Smith"
                         />
                     </div>

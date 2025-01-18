@@ -13,7 +13,7 @@ export default function LandingPage() {
             <Vortex className="absolute inset-0" baseHue={220} particleCount={300} />
             
             <div className="relative z-10">
-                <nav className="p-6 backdrop-blur-sm bg-primary-900/30 border-b border-primary-800/50">
+                <nav className="p-6 backdrop-blur-sm bg-primary-900/30">
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <div className="flex items-center gap-4">
                             <div className="relative group">

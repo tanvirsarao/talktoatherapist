@@ -1,7 +1,6 @@
 {
-  "name": "anontherapy",
+  "name": "talktuahtherapy",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "dev": "next dev --turbo",
     "build": "next build",

@@ -1,7 +1,6 @@
-// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract anonTherapy {
+contract talkTuah {
     // Mapping from address to a mapping of persona to blobId
     mapping(address => mapping(string => string)) private addressPersonaToBlobId;
 
@@ -15,3 +14,11 @@ contract anonTherapy {
         return addressPersonaToBlobId[_address][_persona];
     }
 }
+
+//proof of concept
+//nested instances of mapping -> each eth address can store key value pairs
+//maping of a string to a string, persona to blobId
+
+//write stores the blobid for a given address and persona
+
+//read retrieves the blobid for a given address and persona

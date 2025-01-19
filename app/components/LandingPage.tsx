@@ -108,7 +108,7 @@ export default function LandingPage() {
                         </motion.div>
                     </div>
 
-                    <div className="h-[15vh]"></div>
+                    <div className="h-[10vh]"></div>
 
                     <motion.div 
                         className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"

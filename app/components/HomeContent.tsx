@@ -116,10 +116,7 @@ export default function HomeContent() {
                                     priority
                                 />
                             </div>
-                            <div className="space-y-1">
-                                <h1 className="text-2xl font-bold text-white">TalkTuahTherapist</h1>
-                                <p className="text-sm text-neutral-300">AI Therapy Chat</p>
-                            </div>
+                            <h1 className="text-2xl font-bold text-white">TalkTuahTherapist</h1>
                         </Link>
                         
                         <div className="flex items-center gap-4">
@@ -136,7 +133,7 @@ export default function HomeContent() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
-                                <h2 className="text-3xl font-medium text-white mb-12 text-center">
+                                <h2 className="text-5xl font-bold text-white mb-12 text-center gradient-text">
                                     Create Your Perfect Therapist
                                 </h2>
                                 <button 

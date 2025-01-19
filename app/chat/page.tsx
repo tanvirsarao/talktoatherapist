@@ -7,6 +7,7 @@ import { DynamicContextProvider } from "@dynamic-labs/sdk-react-core";
 import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import Layout from "../components/Layout";
 import SpeechRecorder from "../components/SpeechRecorder";
+import ChatMessage from '../components/ChatMessage';
 
 export default function ChatPage() {
     return (
@@ -27,6 +28,7 @@ function ChatContent() {
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedTherapist, setSelectedTherapist] = useState<number | null>(null);
+    const [isMuted, setIsMuted] = useState(false);
     
     useEffect(() => {
         const therapist = localStorage.getItem('selectedTherapist');
@@ -37,15 +39,16 @@ function ChatContent() {
         }
     }, [router]);
     
+    const handleToggleMute = () => {
+        setIsMuted(!isMuted);
+    };
+
     return (
         <Layout>
             <div className="flex flex-col min-h-screen">
-                <div className="flex-1 container mx-auto px-4 pb-20">
+                <div className="flex-1 container mx-auto px-4 pb-4">
                     <motion.div 
-                        className="max-w-3xl mx-auto w-full h-[calc(100vh-8rem)] flex flex-col"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
+                        className="max-w-3xl mx-auto w-full h-[calc(100vh-4rem)] flex flex-col"
                     >
                         <motion.div 
                             className="mb-4"
@@ -65,42 +68,27 @@ function ChatContent() {
                         </motion.div>
 
                         <motion.div 
-                            className="flex-1 overflow-y-auto space-y-4"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.6, delay: 0.3 }}
+                            className="flex-1 overflow-y-auto space-y-2"
                         >
                             <AnimatePresence mode="wait">
                                 {messages.map((message, index) => (
-                                    <motion.div
+                                    <ChatMessage
                                         key={index}
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        exit={{ opacity: 0, y: -20 }}
-                                        className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'} mb-4`}
-                                    >
-                                        <div className={`max-w-[80%] rounded-lg p-4 ${
-                                            message.role === 'user' 
-                                                ? 'bg-blue-600 text-white' 
-                                                : 'bg-gray-700 text-gray-100'
-                                        }`}>
-                                            {message.content}
-                                        </div>
-                                    </motion.div>
+                                        content={message.content}
+                                        role={message.role}
+                                        onToggleMute={handleToggleMute}
+                                        isMuted={isMuted}
+                                    />
                                 ))}
                             </AnimatePresence>
                         </motion.div>
 
-                        <motion.div 
-                            className="mt-auto pt-4 bg-background"
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.4 }}
-                        >
+                        <motion.div className="mt-auto pt-2 bg-background">
                             <SpeechRecorder
                                 selectedPersona={selectedTherapist}
                                 messages={messages}
                                 setMessages={setMessages}
+                                isMuted={isMuted}
                             />
                         </motion.div>
                     </motion.div>

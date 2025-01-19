@@ -13,6 +13,7 @@ import { Vortex } from "../components/ui/vortex";
 import { FaPlus } from 'react-icons/fa';
 import { HoverBorderGradient } from "../components/HoverBorderGradient";
 import { useRouter } from "next/navigation";
+import ChatMessage from "../components/ChatMessage";
 
 export default function HomeContent() {
     const { primaryWallet } = useDynamicContext();
@@ -23,6 +24,7 @@ export default function HomeContent() {
     const [isSaving, setIsSaving] = useState(false);
     const [personas, setPersonas] = useState(basePersonas);
     const [showCustomizer, setShowCustomizer] = useState(false);
+    const [isMuted, setIsMuted] = useState(false);
     const router = useRouter();
 
     const handleReset = () => setMessages([]);
@@ -91,6 +93,13 @@ export default function HomeContent() {
             alert("Failed to load chat. Please try again.");
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleToggleMute = (muted: boolean) => {
+        setIsMuted(muted);
+        if (muted) {
+            window.speechSynthesis.cancel(); // Immediately stop any ongoing speech
         }
     };
 
@@ -182,14 +191,12 @@ export default function HomeContent() {
                                                 exit={{ opacity: 0, y: -20 }}
                                                 className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
                                             >
-                                                <div className={`max-w-[70%] rounded-lg p-4 ${
-                                                    message.role === "user" 
-                                                        ? "bg-primary-600/80 text-white"
-                                                        : "bg-neutral-700/80 text-white"
-                                                } shadow-lg relative group`}>
-                                                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
-                                                    <p className="relative z-10">{message.content}</p>
-                                                </div>
+                                                <ChatMessage
+                                                    content={message.content}
+                                                    role={message.role}
+                                                    onToggleMute={handleToggleMute}
+                                                    isMuted={isMuted}
+                                                />
                                             </motion.div>
                                         ))}
                                     </AnimatePresence>
@@ -199,6 +206,7 @@ export default function HomeContent() {
                                     selectedPersona={selectedPersona}
                                     messages={messages}
                                     setMessages={setMessages}
+                                    isMuted={isMuted}
                                 />
                             </div>
                         )}

@@ -99,7 +99,11 @@ export default function HomeContent() {
     const handleToggleMute = (muted: boolean) => {
         setIsMuted(muted);
         if (muted) {
-            window.speechSynthesis.cancel(); // Immediately stop any ongoing speech
+            // Stop all audio elements on the page
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
         }
     };
 

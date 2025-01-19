@@ -59,6 +59,7 @@ export default function SpeechRecorder({
     const synth = useRef<SpeechSynthesis | null>(null);
     const lastResultTimeRef = useRef<number>(0);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
+    const [audioElements, setAudioElements] = useState<HTMLAudioElement[]>([]);
 
     // Initialize speech recognition
     useEffect(() => {
@@ -112,8 +113,8 @@ export default function SpeechRecorder({
     }, [isRecording]);
 
     useEffect(() => {
-        if (isMuted && synth.current) {
-            synth.current.cancel();
+        if (isMuted) {
+            stopAllAudio();
             setIsSpeaking(false);
         }
     }, [isMuted]);
@@ -200,10 +201,26 @@ export default function SpeechRecorder({
         }
     };
 
+    const stopAllAudio = () => {
+        audioElements.forEach(audio => {
+            audio.pause();
+            audio.currentTime = 0;
+        });
+        setAudioElements([]);
+    };
+
     const speakResponse = async (text: string) => {
-        if (isMuted) return;
+        if (isMuted) {
+            stopAllAudio();
+            setIsSpeaking(false);
+            return;
+        }
+
+        // Stop any currently playing audio before starting new one
+        stopAllAudio();
 
         console.log('playing audio...')
+        try {
             const response = await fetch("/api/text-to-speech", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -222,16 +239,21 @@ export default function SpeechRecorder({
 
             const audioBlob = await response.blob();
             const audioUrl = URL.createObjectURL(audioBlob);
-            setIsSpeaking(true);
             const audio = new Audio(audioUrl);
 
             audio.onended = () => {
                 setIsSpeaking(false);
                 URL.revokeObjectURL(audioUrl);
+                setAudioElements(prev => prev.filter(a => a !== audio));
             };
 
             setIsSpeaking(true);
+            setAudioElements(prev => [...prev, audio]);
             await audio.play();
+        } catch (error) {
+            console.error("Error playing audio:", error);
+            setIsSpeaking(false);
+        }
     };
 
     const finalizeChunk = async (chunk: string) => {

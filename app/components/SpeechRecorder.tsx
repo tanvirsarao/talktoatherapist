@@ -227,57 +227,42 @@ export default function SpeechRecorder({
     };
 
     return (
-        <div className="w-full">
-            <div className="flex items-start gap-4">
-                <div className="flex-shrink-0">
+        <div className="flex gap-4 items-end">
+            <button
+                onClick={isRecording ? stopRecording : startRecording}
+                className={`p-4 rounded-full transition-all ${
+                    isRecording 
+                        ? 'bg-red-500 hover:bg-red-600' 
+                        : 'bg-primary-600 hover:bg-primary-700'
+                }`}
+            >
+                <FaMicrophone className="h-5 w-5 text-white" />
+            </button>
+
+            <div className="flex-grow space-y-4">
+                {isRecording && (
+                    <div className="w-full">
+                        <div className="mt-2 p-3 bg-neutral-700 rounded-lg min-h-[3em] text-white">
+                            {partialTranscript}
+                        </div>
+                    </div>
+                )}
+
+                <form onSubmit={handleSubmit} className="w-full flex gap-2 relative">
+                    <input
+                        type="text"
+                        value={textInput}
+                        onChange={(e) => setTextInput(e.target.value)}
+                        placeholder="Type your message here..."
+                        className="w-full px-4 py-3 rounded-lg bg-neutral-700 text-white placeholder-neutral-400 pr-12 border-none focus:ring-2 focus:ring-neutral-500 transition-all"
+                    />
                     <button
-                        onClick={isRecording ? stopRecording : startRecording}
-                        className="group relative rounded-full p-px bg-slate-800 hover:bg-slate-700 transition-all duration-300 shadow-xl"
+                        type="submit"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-neutral-600 transition-colors group"
                     >
-                        <div className="relative flex items-center justify-center h-14 w-14 rounded-full bg-zinc-950 ring-1 ring-white/10">
-                            {isRecording ? (
-                                <>
-                                    <div className="absolute inset-0 rounded-full animate-pulse bg-red-500/20"></div>
-                                    <div className="h-4 w-4 rounded bg-red-500"></div>
-                                </>
-                            ) : (
-                                <FaMicrophone className={`h-5 w-5 text-neutral-300 group-hover:text-white transition-colors`} />
-                            )}
-                        </div>
-                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-neutral-400">
-                            {isRecording ? 'Stop' : 'Record'}
-                        </span>
+                        <FaArrowUp className="h-4 w-4 text-neutral-400 group-hover:text-white transition-colors" />
                     </button>
-                </div>
-
-                <div className="flex-grow space-y-4">
-                    {isRecording && (
-                        <div className="w-full">
-                            <p className="text-sm text-neutral-400 italic">
-                                Listening... (interim transcript below)
-                            </p>
-                            <div className="mt-2 p-3 bg-neutral-700 rounded-lg min-h-[3em] text-white">
-                                {partialTranscript}
-                            </div>
-                        </div>
-                    )}
-
-                    <form onSubmit={handleSubmit} className="w-full flex gap-2 relative">
-                        <input
-                            type="text"
-                            value={textInput}
-                            onChange={(e) => setTextInput(e.target.value)}
-                            placeholder="Type your message here..."
-                            className="w-full px-4 py-3 rounded-lg bg-neutral-700 text-white placeholder-neutral-400 pr-12 border-none focus:ring-2 focus:ring-neutral-500 transition-all"
-                        />
-                        <button
-                            type="submit"
-                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-neutral-600 transition-colors group"
-                        >
-                            <FaArrowUp className="h-4 w-4 text-neutral-400 group-hover:text-white transition-colors" />
-                        </button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     );

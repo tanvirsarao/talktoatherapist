@@ -245,7 +245,7 @@ export default function HomeContent() {
                             className="rounded-full"
                             priority
                         />
-                        <div className="text-neutral-400">
+                        <div className="text-neutral-400 fixed">
                             <p>© 2025 TalkTuahTherapist</p>
                         </div>
                     </motion.div>

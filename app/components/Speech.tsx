@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect } from "react";
 
 interface Message {
     role: string;
@@ -26,9 +25,8 @@ const VOICE_MAPPING = {
 
 export default function Speech({ selectedPersona, messages, setMessages }: SpeechProps) {
     const [isPlaying, setIsPlaying] = useState(false);
-    
+
     useEffect(() => {
-        // Listen for new assistant messages and speak them
         const lastMessage = messages[messages.length - 1];
         if (lastMessage?.role === "assistant" && !isPlaying) {
             playResponse(lastMessage.content);
@@ -37,28 +35,27 @@ export default function Speech({ selectedPersona, messages, setMessages }: Speec
 
     const playResponse = async (text: string) => {
         try {
-            const response = await fetch('/api/text-to-speech', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            console.log('playing audio...')
+            const response = await fetch("/api/text-to-speech", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     text,
                     voiceId: VOICE_MAPPING[selectedPersona as keyof typeof VOICE_MAPPING],
-                    modelId: 'eleven_monolingual_v1',
-                    stability: 0.30,
+                    modelId: "eleven_monolingual_v1",
+                    stability: 0.3,
                     similarityBoost: 0.85,
                     style: 1.0,
                     speakerBoost: true,
                 }),
             });
 
-            if (!response.ok) throw new Error('Failed to generate speech');
+            if (!response.ok) throw new Error("Failed to generate speech");
 
             const audioBlob = await response.blob();
             const audioUrl = URL.createObjectURL(audioBlob);
             const audio = new Audio(audioUrl);
-            
+
             audio.onended = () => {
                 setIsPlaying(false);
                 URL.revokeObjectURL(audioUrl);
@@ -67,12 +64,10 @@ export default function Speech({ selectedPersona, messages, setMessages }: Speec
             setIsPlaying(true);
             await audio.play();
         } catch (error) {
-            console.error('Error playing audio:', error);
+            console.error("Error playing audio:", error);
             setIsPlaying(false);
         }
     };
 
-    // ... rest of your existing speech recognition code ...
-
     return null; // This component only handles speech, no UI needed
-} 
+}

@@ -13,7 +13,7 @@ export default function LandingPage() {
             <Vortex className="absolute inset-0" baseHue={220} particleCount={300} />
             
             <div className="relative z-10">
-                <nav className="p-6 backdrop-blur-sm bg-primary-900/30">
+                <nav className="p-6 bg-primary-900/30">
                     <div className="max-w-7xl mx-auto flex justify-between items-center">
                         <div className="flex items-center gap-4">
                             <div className="relative group">
@@ -107,6 +107,8 @@ export default function LandingPage() {
                             </div>
                         </motion.div>
                     </div>
+
+                    <div className="h-[15vh]"></div>
 
                     <motion.div 
                         className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"

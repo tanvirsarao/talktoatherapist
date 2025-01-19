@@ -11,7 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="min-h-screen relative overflow-hidden flex flex-col">
             <Vortex className="absolute inset-0" baseHue={220} particleCount={500} />
             
-            <nav className="relative z-20 backdrop-blur-sm bg-primary-900/30">
+            <nav className="relative z-20 bg-primary-900/30">
                 <div className="container mx-auto px-4 py-4">
                     <div className="flex items-center justify-between">
                         <Link href="/" className="flex items-center gap-4 group">

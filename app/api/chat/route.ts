@@ -28,16 +28,13 @@ export async function POST(request: Request) {
         if (customPrompt) {
             systemPrompt = customPrompt;
         } else {
-            // Import basePersonas from constants
             const { basePersonas } = require('../../lib/constants');
-            
-            // Find the matching persona
             const selectedPersona = basePersonas.find(p => p.id === persona);
             systemPrompt = selectedPersona?.customPrompt || "You are a professional therapist. Maintain a supportive and ethical therapeutic environment.";
         }
 
         const completion = await openai.chat.completions.create({
-            model: "gpt-4-turbo-preview",
+            model: "gpt-4-0125-preview",
             messages: [
                 { 
                     role: "system", 
@@ -58,14 +55,11 @@ export async function POST(request: Request) {
             frequency_penalty: 0.1,
         });
 
-        return NextResponse.json(
-            { message: completion.choices[0].message.content },
-            { status: 200 }
-        );
+        return NextResponse.json({ message: completion.choices[0].message.content });
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error in chat route:', error);
         return NextResponse.json(
-            { error: 'An error occurred during your request.' },
+            { error: 'Error processing your request' },
             { status: 500 }
         );
     }

@@ -11,6 +11,7 @@ import Dynamic from "./Dynamic";
 import { basePersonas } from "../lib/constants";
 import { Vortex } from "../components/ui/vortex";
 import { FaPlus } from 'react-icons/fa';
+import { HoverBorderGradient } from "../components/HoverBorderGradient";
 
 export default function HomeContent() {
     const { primaryWallet } = useDynamicContext();
@@ -133,33 +134,37 @@ export default function HomeContent() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                             >
-                                <h2 className="text-4xl font-bold text-white mb-8 text-center gradient-text">
+                                <h2 className="text-3xl font-medium text-white mb-12 text-center">
                                     Create Your Perfect Therapist
                                 </h2>
-                                <motion.button
-                                    whileHover={{ scale: 1.05 }}
-                                    whileTap={{ scale: 0.95 }}
+                                <button 
                                     onClick={() => setShowCustomizer(true)}
-                                    className="flex items-center gap-3 px-8 py-4 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-all backdrop-blur-sm shadow-lg hover:shadow-xl text-lg font-semibold"
+                                    className="bg-slate-800 no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6 text-white inline-block"
                                 >
-                                    <FaPlus />
-                                    <span>Create Custom Therapist</span>
-                                </motion.button>
+                                    <span className="absolute inset-0 overflow-hidden rounded-full">
+                                        <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+                                    </span>
+                                    <div className="relative flex space-x-2 items-center z-10 rounded-full bg-zinc-950 py-2 px-6 ring-1 ring-white/10">
+                                        <FaPlus className="h-4 w-4" />
+                                        <span className="text-sm">Create Custom Therapist</span>
+                                    </div>
+                                    <span className="absolute -bottom-0 left-[1.125rem] h-px w-[calc(100%-2.25rem)] bg-gradient-to-r from-emerald-400/0 via-emerald-400/90 to-emerald-400/0 transition-opacity duration-500 group-hover:opacity-40" />
+                                </button>
                                 
                                 {personas.length > 0 && (
-                                    <div className="mt-12 text-center">
-                                        <p className="text-neutral-400 mb-6">Or choose from our preset therapists:</p>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    <div className="mt-16 text-center">
+                                        <p className="text-neutral-400 text-sm mb-8">Or choose from our preset therapists:</p>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                             {personas.map((persona) => (
                                                 <motion.div
                                                     key={persona.id}
                                                     whileHover={{ scale: 1.02 }}
                                                     whileTap={{ scale: 0.98 }}
                                                     onClick={() => handlePersonaChange(persona.id)}
-                                                    className="card-enhanced gradient-border p-6 rounded-xl cursor-pointer"
+                                                    className="p-4 rounded-lg cursor-pointer bg-neutral-900/30 hover:bg-neutral-800/50 transition-all border border-transparent hover:border-white/30 group"
                                                 >
-                                                    <h3 className="font-semibold text-lg mb-2 text-white">{persona.name}</h3>
-                                                    <p className="text-sm text-neutral-400">{persona.description}</p>
+                                                    <h3 className="font-medium text-base mb-1 text-neutral-400 group-hover:text-white transition-colors">{persona.name}</h3>
+                                                    <p className="text-xs text-neutral-500 group-hover:text-neutral-300 transition-colors">{persona.description}</p>
                                                 </motion.div>
                                             ))}
                                         </div>

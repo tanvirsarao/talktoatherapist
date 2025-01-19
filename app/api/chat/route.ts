@@ -26,11 +26,23 @@ export async function POST(request: Request) {
 
         let systemPrompt;
         if (customPrompt) {
-            systemPrompt = customPrompt;
+            systemPrompt = `${customPrompt}\n\nImportant Instructions:
+- Keep responses concise and clear, typically 1-3 sentences
+- Use natural, conversational language as a real therapist would
+- Avoid lengthy explanations unless specifically asked
+- Maintain a warm, empathetic tone
+- Ask focused questions to guide the conversation
+- Use active listening techniques`;
         } else {
             const { basePersonas } = require('../../lib/constants');
             const selectedPersona = basePersonas.find(p => p.id === persona);
-            systemPrompt = selectedPersona?.customPrompt || "You are a professional therapist. Maintain a supportive and ethical therapeutic environment.";
+            systemPrompt = `${selectedPersona?.customPrompt || "You are a professional therapist."}\n\nImportant Instructions:
+- Keep responses concise and clear, typically 1-3 sentences
+- Use natural, conversational language as a real therapist would
+- Avoid lengthy explanations unless specifically asked
+- Maintain a warm, empathetic tone
+- Ask focused questions to guide the conversation
+- Use active listening techniques`;
         }
 
         const completion = await openai.chat.completions.create({
@@ -42,17 +54,17 @@ export async function POST(request: Request) {
                 },
                 {
                     role: "system",
-                    content: "Remember to stay in character and maintain a professional therapeutic environment. Focus on your specified expertise areas and therapeutic approaches."
+                    content: "Remember to keep responses brief and conversational, as if speaking in a real therapy session."
                 },
                 { 
                     role: "user", 
                     content: message 
                 }
             ],
-            temperature: 0.4,
-            max_tokens: 800,
-            presence_penalty: 0.1,
-            frequency_penalty: 0.1,
+            temperature: 0.7,
+            max_tokens: 150,
+            presence_penalty: 0.3,
+            frequency_penalty: 0.3,
         });
 
         return NextResponse.json({ message: completion.choices[0].message.content });

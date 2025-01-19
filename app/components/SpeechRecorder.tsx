@@ -116,17 +116,14 @@ export default function SpeechRecorder({
         if (isMuted) {
             stopAllAudio();
             setIsSpeaking(false);
-        }
-    }, [isMuted]);
-
-    useEffect(() => {
-        if (!isMuted && messages.length > 0) {
+        } else if (messages.length > 0) {
+            // When unmuted, play the last assistant message if it exists
             const lastMessage = messages[messages.length - 1];
             if (lastMessage.role === 'assistant') {
                 speakResponse(lastMessage.content);
             }
         }
-    }, [isMuted, messages]);
+    }, [isMuted]);
 
     const startRecording = () => {
         if (!recognitionRef.current) {
@@ -216,8 +213,13 @@ export default function SpeechRecorder({
             return;
         }
 
-        // Stop any currently playing audio before starting new one
+        // Stop all existing audio and clear audio elements
         stopAllAudio();
+        
+        // Cancel any pending speech synthesis
+        if (synth.current) {
+            synth.current.cancel();
+        }
 
         console.log('playing audio...')
         try {
@@ -247,8 +249,12 @@ export default function SpeechRecorder({
                 setAudioElements(prev => prev.filter(a => a !== audio));
             };
 
+            audio.onpause = () => {
+                setIsSpeaking(false);
+            };
+
+            setAudioElements([audio]);
             setIsSpeaking(true);
-            setAudioElements(prev => [...prev, audio]);
             await audio.play();
         } catch (error) {
             console.error("Error playing audio:", error);

@@ -8,6 +8,8 @@ import { EthereumWalletConnectors } from "@dynamic-labs/ethereum";
 import Layout from "../components/Layout";
 import SpeechRecorder from "../components/SpeechRecorder";
 import ChatMessage from '../components/ChatMessage';
+import Link from "next/link";
+import Image from "next/image";
 
 export default function ChatPage() {
     return (
@@ -44,9 +46,29 @@ function ChatContent() {
     };
 
     return (
-        <Layout>
-            <div className="flex flex-col min-h-screen">
-                <div className="flex-1 container mx-auto px-4 pb-4">
+        <div className="min-h-screen bg-background">
+            <nav className="fixed top-0 w-full bg-background/80 backdrop-blur-sm z-50 border-b border-neutral-800">
+                <div className="container mx-auto px-4">
+                    <div className="flex items-center justify-between h-16">
+                        <div className="flex items-center gap-4">
+                            <Link href="/" className="flex items-center gap-2">
+                                <Image
+                                    src="/logo.png"
+                                    alt="TalkTuahTherapist"
+                                    width={30}
+                                    height={30}
+                                    className="rounded-full"
+                                    priority
+                                />
+                                <span className="text-lg font-semibold text-white">TalkTuahTherapist</span>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <main className="pt-16">
+                <div className="container mx-auto px-4 pb-4">
                     <motion.div 
                         className="max-w-3xl mx-auto w-full h-[calc(100vh-4rem)] flex flex-col"
                     >
@@ -68,7 +90,7 @@ function ChatContent() {
                         </motion.div>
 
                         <motion.div 
-                            className="flex-1 overflow-y-auto space-y-2"
+                            className="flex-1 overflow-y-auto space-y-2 pb-24"
                         >
                             <AnimatePresence mode="wait">
                                 {messages.map((message, index) => (
@@ -83,7 +105,7 @@ function ChatContent() {
                             </AnimatePresence>
                         </motion.div>
 
-                        <motion.div className="mt-auto pt-2 bg-background">
+                        <motion.div className="fixed bottom-8 left-1/2 -translate-x-1/2 w-full max-w-3xl px-6 bg-background">
                             <SpeechRecorder
                                 selectedPersona={selectedTherapist}
                                 messages={messages}
@@ -93,7 +115,7 @@ function ChatContent() {
                         </motion.div>
                     </motion.div>
                 </div>
-            </div>
-        </Layout>
+            </main>
+        </div>
     );
 } 

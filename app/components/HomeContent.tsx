@@ -211,23 +211,7 @@ export default function HomeContent() {
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
                         >
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={handleReset}
-                                className="px-6 py-3 bg-neutral-700/50 hover:bg-neutral-600/50 text-white rounded-lg transition-colors"
-                            >
-                                Reset Chat
-                            </motion.button>
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                onClick={handleSave}
-                                disabled={isSaving}
-                                className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-colors disabled:bg-neutral-600/50"
-                            >
-                                {isSaving ? "Saving..." : "Save Chat"}
-                            </motion.button>
+                            
                             {savedBlobIds[selectedPersona] && (
                                 <motion.button
                                     whileHover={{ scale: 1.05 }}

@@ -12,6 +12,7 @@ import { basePersonas } from "../lib/constants";
 import { Vortex } from "../components/ui/vortex";
 import { FaPlus } from 'react-icons/fa';
 import { HoverBorderGradient } from "../components/HoverBorderGradient";
+import { useRouter } from "next/navigation";
 
 export default function HomeContent() {
     const { primaryWallet } = useDynamicContext();
@@ -22,24 +23,25 @@ export default function HomeContent() {
     const [isSaving, setIsSaving] = useState(false);
     const [personas, setPersonas] = useState(basePersonas);
     const [showCustomizer, setShowCustomizer] = useState(false);
+    const router = useRouter();
 
     const handleReset = () => setMessages([]);
     
     const handlePersonaChange = (newPersona: number) => {
-        setSelectedPersona(newPersona);
-        handleReset();
+        localStorage.setItem('selectedTherapist', newPersona.toString());
+        router.push('/chat');
     };
 
     const handleAddCustomTherapist = (therapist: any) => {
         const newPersona = {
-            id: Math.floor(Math.random() * 9000) + 1000, // Generate random ID above 1000
+            id: Math.floor(Math.random() * 9000) + 1000,
             name: therapist.name,
             description: therapist.description,
             customPrompt: therapist.customPrompt
         };
         setPersonas(prev => [...prev, newPersona]);
-        setSelectedPersona(newPersona.id);
-        setShowCustomizer(false);
+        localStorage.setItem('selectedTherapist', newPersona.id.toString());
+        router.push('/chat');
     };
 
     const handleSave = async () => {
@@ -127,7 +129,7 @@ export default function HomeContent() {
                 </nav>
 
                 <main className="container mx-auto px-4 py-8 relative z-10">
-                    <div className="max-w-6xl mx-auto space-y-8">
+                    <div className="max-w-3xl mx-auto space-y-8">
                         {!selectedPersona ? (
                             <motion.div 
                                 className="flex flex-col items-center justify-center py-20"
@@ -172,90 +174,72 @@ export default function HomeContent() {
                                 )}
                             </motion.div>
                         ) : (
-                            <motion.div 
-                                className="space-y-6"
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                            >
-                                <div className="flex justify-between items-center">
-                                    <h2 className="text-2xl font-bold text-white">
-                                        {personas.find(p => p.id === selectedPersona)?.name}
-                                    </h2>
-                                    <button
-                                        onClick={() => setSelectedPersona(null)}
-                                        className="px-4 py-2 bg-neutral-600/50 hover:bg-neutral-700/50 text-white rounded-lg transition-colors"
-                                    >
-                                        Change Therapist
-                                    </button>
+                            <div className="bg-neutral-800/50 backdrop-blur-md rounded-xl p-6 shadow-xl">
+                                <div className="h-[400px] overflow-y-auto mb-6 space-y-4 custom-scrollbar px-4">
+                                    <AnimatePresence>
+                                        {messages.map((message, index) => (
+                                            <motion.div
+                                                key={index}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                exit={{ opacity: 0, y: -20 }}
+                                                className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
+                                            >
+                                                <div className={`max-w-[70%] rounded-lg p-4 ${
+                                                    message.role === "user" 
+                                                        ? "bg-primary-600/80 text-white"
+                                                        : "bg-neutral-700/80 text-white"
+                                                } shadow-lg relative group`}>
+                                                    <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                                                    <p className="relative z-10">{message.content}</p>
+                                                </div>
+                                            </motion.div>
+                                        ))}
+                                    </AnimatePresence>
                                 </div>
-
-                                <div className="bg-neutral-800/50 backdrop-blur-md rounded-xl p-6 shadow-xl">
-                                    <div className="h-[400px] overflow-y-auto mb-6 space-y-4 custom-scrollbar px-4">
-                                        <AnimatePresence>
-                                            {messages.map((message, index) => (
-                                                <motion.div
-                                                    key={index}
-                                                    initial={{ opacity: 0, y: 20 }}
-                                                    animate={{ opacity: 1, y: 0 }}
-                                                    exit={{ opacity: 0, y: -20 }}
-                                                    className={`flex ${message.role === "user" ? "justify-end" : "justify-start"}`}
-                                                >
-                                                    <div className={`max-w-[70%] rounded-lg p-4 ${
-                                                        message.role === "user" 
-                                                            ? "bg-primary-600/80 text-white"
-                                                            : "bg-neutral-700/80 text-white"
-                                                    } shadow-lg relative group`}>
-                                                        <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
-                                                        <p className="relative z-10">{message.content}</p>
-                                                    </div>
-                                                </motion.div>
-                                            ))}
-                                        </AnimatePresence>
-                                    </div>
-                                    
-                                    <SpeechRecorder
-                                        selectedPersona={selectedPersona}
-                                        messages={messages}
-                                        setMessages={setMessages}
-                                    />
-                                </div>
-
-                                <motion.div 
-                                    className="flex flex-wrap gap-4 justify-center"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                >
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={handleReset}
-                                        className="px-6 py-3 bg-neutral-700/50 hover:bg-neutral-600/50 text-white rounded-lg transition-colors"
-                                    >
-                                        Reset Chat
-                                    </motion.button>
-                                    <motion.button
-                                        whileHover={{ scale: 1.05 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        onClick={handleSave}
-                                        disabled={isSaving}
-                                        className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-colors disabled:bg-neutral-600/50"
-                                    >
-                                        {isSaving ? "Saving..." : "Save Chat"}
-                                    </motion.button>
-                                    {savedBlobIds[selectedPersona] && (
-                                        <motion.button
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            onClick={handleLoad}
-                                            disabled={isLoading}
-                                            className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-colors disabled:bg-neutral-600/50"
-                                        >
-                                            {isLoading ? "Loading..." : "Load Chat"}
-                                        </motion.button>
-                                    )}
-                                </motion.div>
-                            </motion.div>
+                                
+                                <SpeechRecorder
+                                    selectedPersona={selectedPersona}
+                                    messages={messages}
+                                    setMessages={setMessages}
+                                />
+                            </div>
                         )}
+
+                        <motion.div 
+                            className="flex flex-wrap gap-4 justify-center"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                        >
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleReset}
+                                className="px-6 py-3 bg-neutral-700/50 hover:bg-neutral-600/50 text-white rounded-lg transition-colors"
+                            >
+                                Reset Chat
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                onClick={handleSave}
+                                disabled={isSaving}
+                                className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-colors disabled:bg-neutral-600/50"
+                            >
+                                {isSaving ? "Saving..." : "Save Chat"}
+                            </motion.button>
+                            {savedBlobIds[selectedPersona] && (
+                                <motion.button
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    onClick={handleLoad}
+                                    disabled={isLoading}
+                                    className="px-6 py-3 bg-primary-600/80 hover:bg-primary-700/80 text-white rounded-lg transition-colors disabled:bg-neutral-600/50"
+                                >
+                                    {isLoading ? "Loading..." : "Load Chat"}
+                                </motion.button>
+                            )}
+                        </motion.div>
                     </div>
                 </main>
 

@@ -9,9 +9,10 @@ interface Message {
 }
 
 interface SpeechRecorderProps {
-    selectedPersona: number;
+    selectedPersona: number | null;
     messages: Message[];
     setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+    isMuted: boolean;
 }
 
 interface SpeechRecognitionEvent {
@@ -48,6 +49,7 @@ export default function SpeechRecorder({
     selectedPersona,
     messages,
     setMessages,
+    isMuted,
 }: SpeechRecorderProps) {
     const [isRecording, setIsRecording] = useState(false);
     const [textInput, setTextInput] = useState("");
@@ -108,6 +110,22 @@ export default function SpeechRecorder({
             stopCheckSilence();
         }
     }, [isRecording]);
+
+    useEffect(() => {
+        if (isMuted && synth.current) {
+            synth.current.cancel();
+            setIsSpeaking(false);
+        }
+    }, [isMuted]);
+
+    useEffect(() => {
+        if (!isMuted && messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.role === 'assistant') {
+                speakResponse(lastMessage.content);
+            }
+        }
+    }, [isMuted, messages]);
 
     const startRecording = () => {
         if (!recognitionRef.current) {
@@ -182,6 +200,7 @@ export default function SpeechRecorder({
         }
     };
 
+<<<<<<< HEAD
     const speakResponse = async (text: string) => {
         console.log('playing audio...')
             const response = await fetch("/api/text-to-speech", {
@@ -212,10 +231,25 @@ export default function SpeechRecorder({
 
             setIsSpeaking(true);
             await audio.play();
+=======
+    const speakResponse = (text: string) => {
+        if (!synth.current || isMuted) {
+            setIsSpeaking(false);
+            if (synth.current) synth.current.cancel();
+            return;
+        }
+
+        synth.current.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+        synth.current.speak(utterance);
+>>>>>>> ec0a569dd29b756e74a7143a02add5cc2f6e8886
     };
 
     const finalizeChunk = async (chunk: string) => {
-        setMessages(prev => [...prev, { role: "user", content: chunk }]);
+        setMessages((prev: Message[]) => [...prev, { role: "user", content: chunk }]);
 
         try {
             const response = await fetch("/api/chat", {
@@ -230,8 +264,8 @@ export default function SpeechRecorder({
             });
 
             const data = await response.json();
-            setMessages(prev => [...prev, { role: "assistant", content: data.message }]);
-            speakResponse(data.message);
+            setMessages((prev: Message[]) => [...prev, { role: "assistant", content: data.message }]);
+            handleResponse(data.message);
         } catch (error) {
             console.error("Error calling chat API:", error);
         }
@@ -243,6 +277,12 @@ export default function SpeechRecorder({
                     recognitionRef.current?.start();
                 }
             }, 300);
+        }
+    };
+
+    const handleResponse = async (response: string) => {
+        if (!isMuted) {
+            speakResponse(response);
         }
     };
 

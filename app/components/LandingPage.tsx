@@ -82,7 +82,6 @@ export default function LandingPage() {
                                 <div className="absolute inset-0 bg-gradient-to-r from-primary-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 <span className="relative z-10 flex items-center gap-2">
                                     Start Your Session
-                                    <FaHeart className="group-hover:scale-110 transition-transform" />
                                 </span>
                             </Link>
                         </motion.div>

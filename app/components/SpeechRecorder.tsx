@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { FaMicrophone, FaArrowUp } from "react-icons/fa";
 
 interface Message {
     role: string;
@@ -226,68 +227,58 @@ export default function SpeechRecorder({
     };
 
     return (
-        <div className="space-y-4">
-            <div className="flex items-center gap-2">
-                <button
-                    onClick={startRecording}
-                    disabled={isRecording}
-                    className={`px-4 py-2 rounded-lg transition-colors ${
-                        isRecording
-                            ? 'bg-neutral-400 cursor-not-allowed'
-                            : 'bg-primary-600 hover:bg-primary-700 text-white'
-                    }`}
-                >
-                    Start Recording
-                </button>
-
-                <button
-                    onClick={stopRecording}
-                    disabled={!isRecording}
-                    className={`px-4 py-2 rounded-lg transition-colors ${
-                        !isRecording
-                            ? 'bg-neutral-400 cursor-not-allowed'
-                            : 'bg-red-600 hover:bg-red-700 text-white'
-                    }`}
-                >
-                    Stop Recording
-                </button>
-
-                {isSpeaking && (
+        <div className="w-full">
+            <div className="flex items-start gap-4">
+                <div className="flex-shrink-0">
                     <button
-                        onClick={() => synth.current?.cancel()}
-                        className="px-4 py-2 bg-yellow-600 hover:bg-yellow-700 text-white rounded-lg transition-colors"
+                        onClick={isRecording ? stopRecording : startRecording}
+                        className="group relative rounded-full p-px bg-slate-800 hover:bg-slate-700 transition-all duration-300 shadow-xl"
                     >
-                        Stop Speaking
+                        <div className="relative flex items-center justify-center h-14 w-14 rounded-full bg-zinc-950 ring-1 ring-white/10">
+                            {isRecording ? (
+                                <>
+                                    <div className="absolute inset-0 rounded-full animate-pulse bg-red-500/20"></div>
+                                    <div className="h-4 w-4 rounded bg-red-500"></div>
+                                </>
+                            ) : (
+                                <FaMicrophone className={`h-5 w-5 text-neutral-300 group-hover:text-white transition-colors`} />
+                            )}
+                        </div>
+                        <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-neutral-400">
+                            {isRecording ? 'Stop' : 'Record'}
+                        </span>
                     </button>
-                )}
-            </div>
-
-            {isRecording && (
-                <div className="mt-4">
-                    <p className="text-sm text-neutral-400 italic">
-                        Listening... (interim transcript below)
-                    </p>
-                    <div className="mt-2 p-3 bg-neutral-700 rounded-lg min-h-[3em] text-white">
-                        {partialTranscript}
-                    </div>
                 </div>
-            )}
 
-            <form onSubmit={handleSubmit} className="flex gap-2">
-                <input
-                    type="text"
-                    value={textInput}
-                    onChange={(e) => setTextInput(e.target.value)}
-                    placeholder="Type your message here..."
-                    className="flex-1 px-4 py-2 rounded-lg border border-neutral-300 focus:border-primary-500 focus:ring-2 focus:ring-primary-200 transition-colors bg-neutral-700 text-white placeholder-neutral-400"
-                />
-                <button
-                    type="submit"
-                    className="px-4 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-lg transition-colors"
-                >
-                    Send
-                </button>
-            </form>
+                <div className="flex-grow space-y-4">
+                    {isRecording && (
+                        <div className="w-full">
+                            <p className="text-sm text-neutral-400 italic">
+                                Listening... (interim transcript below)
+                            </p>
+                            <div className="mt-2 p-3 bg-neutral-700 rounded-lg min-h-[3em] text-white">
+                                {partialTranscript}
+                            </div>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} className="w-full flex gap-2 relative">
+                        <input
+                            type="text"
+                            value={textInput}
+                            onChange={(e) => setTextInput(e.target.value)}
+                            placeholder="Type your message here..."
+                            className="w-full px-4 py-3 rounded-lg bg-neutral-700 text-white placeholder-neutral-400 pr-12 border-none focus:ring-2 focus:ring-neutral-500 transition-all"
+                        />
+                        <button
+                            type="submit"
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 rounded-full hover:bg-neutral-600 transition-colors group"
+                        >
+                            <FaArrowUp className="h-4 w-4 text-neutral-400 group-hover:text-white transition-colors" />
+                        </button>
+                    </form>
+                </div>
+            </div>
         </div>
     );
 }

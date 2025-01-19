@@ -189,7 +189,7 @@ export default function HomeContent() {
                                     </button>
                                 </div>
 
-                                <div className="bg-neutral-800/50 backdrop-blur-md rounded-xl p-6 shadow-xl border border-neutral-700/50">
+                                <div className="bg-neutral-800/50 backdrop-blur-md rounded-xl p-6 shadow-xl">
                                     <div className="h-[400px] overflow-y-auto mb-6 space-y-4 custom-scrollbar px-4">
                                         <AnimatePresence>
                                             {messages.map((message, index) => (

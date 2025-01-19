@@ -17,6 +17,24 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
     const [description, setDescription] = useState('');
     const [customPrompt, setCustomPrompt] = useState('');
 
+    const generateStructuredPrompt = (name: string, description: string, customPrompt: string) => {
+        return `You are ${name}, a professional therapist ${description}. 
+
+Key aspects of your therapeutic approach:
+${customPrompt}
+
+Important guidelines:
+- Maintain professional boundaries and ethical therapeutic practices
+- Stay focused on your area of expertise
+- Use evidence-based therapeutic techniques
+- Provide practical, actionable guidance when appropriate
+- Express empathy while maintaining professional distance
+- Never diagnose or prescribe medication
+- If a topic is outside your expertise, acknowledge this and recommend seeking appropriate professional help
+
+Remember to maintain this therapeutic persona consistently throughout the conversation.`;
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         
@@ -25,17 +43,16 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
             return;
         }
 
-        // Generate a random ID above 1000 to avoid conflicts with base personas
+        const structuredPrompt = generateStructuredPrompt(name, description, customPrompt);
         const id = Math.floor(Math.random() * 9000) + 1000;
         
         onAdd({
             id,
             name,
             description,
-            customPrompt
+            customPrompt: structuredPrompt
         });
 
-        // Reset form
         setName('');
         setDescription('');
         setCustomPrompt('');
@@ -80,17 +97,25 @@ export default function CustomPersonaCreator({ onAdd }: CustomPersonaProps) {
                                 placeholder="A compassionate therapist specializing in anxiety"
                             />
                         </div>
-                        
                         <div>
                             <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">
-                                Personality Prompt
+                                Personality Prompt (List key aspects of your therapeutic approach)
                             </label>
+                            <div className="mb-2 text-xs text-neutral-400">
+                                Format as bullet points, for example:
+                                - Specialized in cognitive behavioral therapy
+                                - Focus on anxiety management techniques
+                                - Utilize mindfulness-based stress reduction
+                            </div>
                             <textarea
                                 value={customPrompt}
                                 onChange={(e) => setCustomPrompt(e.target.value)}
                                 className="w-full px-3 py-2 border border-neutral-300 rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 bg-neutral-700 text-white border-neutral-600"
-                                rows={4}
-                                placeholder="You are a compassionate therapist who specializes in anxiety disorders. You use a mix of CBT and mindfulness techniques..."
+                                rows={6}
+                                placeholder="- Specialized in [specific approach]
+- Focus on [specific techniques]
+- Utilize [specific methodologies]
+- Emphasize [specific aspects]"
                             />
                         </div>
                         

@@ -37,13 +37,25 @@ export async function POST(request: Request) {
         }
 
         const completion = await openai.chat.completions.create({
-            model: "gpt-4",
+            model: "gpt-4-turbo-preview",
             messages: [
-                { role: "system", content: systemPrompt },
-                { role: "user", content: message }
+                { 
+                    role: "system", 
+                    content: systemPrompt 
+                },
+                {
+                    role: "system",
+                    content: "Remember to stay in character and maintain a professional therapeutic environment. Focus on your specified expertise areas and therapeutic approaches."
+                },
+                { 
+                    role: "user", 
+                    content: message 
+                }
             ],
-            temperature: 0.7,
-            max_tokens: 500,
+            temperature: 0.4,
+            max_tokens: 800,
+            presence_penalty: 0.1,
+            frequency_penalty: 0.1,
         });
 
         return NextResponse.json(

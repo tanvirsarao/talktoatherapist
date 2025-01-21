@@ -6,7 +6,10 @@
 The average wait time to see a therapist in Canada is 8 to 12 weeks.
 Over 40 million Canadian healthcare records were compromised in data breaches in 2023 alone.
 
-### Canadians Deserve Better
+**Canadians Deserve Better**
+
+
+---
 
 ![image](https://github.com/user-attachments/assets/ebea787a-8cef-45b7-9658-045f4929237c)
 

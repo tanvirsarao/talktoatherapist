@@ -32,6 +32,8 @@
     "tailwind-merge": "^2.6.0",
     "tailwindcss": "^3.4.1",
     "typescript": "^5",
-    "viem": "^2.21.30"
+    "viem": "^2.21.30",
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "hardhat": "^2.22.13"
   }
 }

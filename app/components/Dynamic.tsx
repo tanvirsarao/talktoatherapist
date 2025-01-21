@@ -39,26 +39,3 @@ export default function Dynamic() {
 
     return <DynamicWidget variant="modal" />;
 }
-
-async function sendEthereum(toAddress: string, amount: string): Promise<string> {
-    const privateKey = process.env.NEXT_PUBLIC_FUND_KEY;
-    if (!privateKey) {
-        throw new Error("Private key not found in environment variables");
-    }
-
-    const provider = new ethers.JsonRpcProvider("https://testnet.evm.nodes.onflow.org");
-    const wallet = new ethers.Wallet(privateKey, provider);
-    const tx = {
-        to: toAddress,
-        value: ethers.parseEther(amount),
-    };
-
-    try {
-        const transaction = await wallet.sendTransaction(tx);
-        const receipt = await transaction.wait();
-        return transaction.hash;
-    } catch (error) {
-        console.error("Error sending transaction:", error);
-        throw error;
-    }
-}
